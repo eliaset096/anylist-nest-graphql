@@ -1,4 +1,5 @@
-import { Args, ID, Int, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { ParseUUIDPipe } from '@nestjs/common';
+import { Args, ID, Mutation, Query, Resolver } from '@nestjs/graphql';
 import { CreateItemInput, UpdateItemInput } from './dtos/inputs/index.inputs';
 import { Item } from './entities/item.entity';
 import { ItemsService } from './items.service';
@@ -20,17 +21,23 @@ export class ItemsResolver {
   }
 
   @Query(() => Item, { name: 'item' })
-  async findOne(@Args('id', { type: () => ID }) id: string): Promise<Item> {
+  async findOne(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<Item> {
     return this.itemsService.findOne(id);
   }
 
   @Mutation(() => Item)
-  updateItem(@Args('updateItemInput') updateItemInput: UpdateItemInput) {
+  async updateItem(
+    @Args('updateItemInput') updateItemInput: UpdateItemInput,
+  ): Promise<Item> {
     return this.itemsService.update(updateItemInput.id, updateItemInput);
   }
 
   @Mutation(() => Item)
-  removeItem(@Args('id', { type: () => Int }) id: number) {
+  removeItem(
+    @Args('id', { type: () => ID }, ParseUUIDPipe) id: string,
+  ): Promise<Item> {
     return this.itemsService.remove(id);
   }
 }

@@ -17,7 +17,12 @@ async function bootstrap() {
   const port = configServie.get('APP_PORT');
 
   await app.listen(port).then(() => {
-    console.log(`Server is running on port ${port}`);
+    //console.log(`Server is running on port ${port}`);
   });
+
+  await app.getUrl().then((url) => {
+    console.log(`Server is running on ${url}/graphql`);
+  });
+
 }
 bootstrap();
