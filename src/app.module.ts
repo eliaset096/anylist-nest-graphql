@@ -8,6 +8,8 @@ import { join } from 'path';
 import { envLoaderConfig } from './common/config/env-loader.config';
 import { envValidationSchema } from './common/config/env-validation-schema.config';
 import { ItemsModule } from './items/items.module';
+import { UsersModule } from './users/users.module';
+import { AuthModule } from './auth/auth.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -34,6 +36,10 @@ import { ItemsModule } from './items/items.module';
     }),
 
     ItemsModule,
+
+    UsersModule,
+
+    AuthModule,
   ],
   controllers: [],
   providers: [],
