@@ -51,4 +51,14 @@ export class AuthService {
     delete user.password;
     return user;
   }
+
+
+
+  async revalidate(user: User): Promise<AuthResponse> {
+    const token = this.getJWTToken(user.id);
+    return {
+      token,
+      user,
+    };
+  }
 }

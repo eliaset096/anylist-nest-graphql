@@ -1,6 +1,8 @@
 import { UseGuards } from '@nestjs/common';
 import { Args, Mutation, Query, Resolver } from '@nestjs/graphql';
+import { User } from 'src/users/entities/user.entity';
 import { AuthService } from './auth.service';
+import { CurrentUser } from './decorators/current-usert.decorator';
 import { LoginInput } from './dtos/inputs/login.input';
 import { SignupInput } from './dtos/inputs/signup.input';
 import { AuthResponse } from './dtos/outputs/auth-response.output';
@@ -26,8 +28,15 @@ export class AuthResolver {
 
   @Query(() => AuthResponse, { name: 'revalidateToken' })
   @UseGuards(JwtAuthGuard)
-  async revalidateToken(/** */): Promise<AuthResponse> {
-    //return this.authService.revalidate(/** */);
-    throw new Error('Method not implemented.');
+  async revalidateToken(@CurrentUser() user: User): Promise<AuthResponse> {
+    return this.authService.revalidate(user);
   }
+
+
+
+
+
+
+
+
 }
